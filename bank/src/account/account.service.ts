@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { AccountRepository } from './entity/account.repository';
 
 @Injectable()
 export class AccountService {
+
+  constructor(private readonly accountRepository: AccountRepository) {}
+
   create(createAccountDto: CreateAccountDto) {
     return 'This action adds a new account';
   }
