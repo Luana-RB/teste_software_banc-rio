@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientRepository } from './entity/client.repository';
+import { AccountRepository } from 'src/account/entity/account.repository';
 
 @Injectable()
 export class ClientService {
-
-  constructor(private readonly clientRepository: ClientRepository) {}
+  constructor(
+    private readonly clientRepository: ClientRepository,
+    private readonly accountRepository: AccountRepository,
+  ) {}
 
   create(createClientDto: CreateClientDto) {
     return 'This action adds a new client';
