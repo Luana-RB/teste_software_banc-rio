@@ -8,7 +8,7 @@ Teste de Software
 
 ## Tecnologias: 
 * NodeJS
-* Postman
+* Insomnia
 * Jest
 * 
 ## Técnicas de Teste de software
