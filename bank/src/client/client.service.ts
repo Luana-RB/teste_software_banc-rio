@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientRepository } from './entity/client.repository';
@@ -12,22 +12,44 @@ export class ClientService {
   ) {}
 
   create(createClientDto: CreateClientDto) {
-    return 'This action adds a new client';
+    return this.clientRepository.newClient(createClientDto);
   }
 
   findAll() {
-    return `This action returns all client`;
+    return this.clientRepository.getClients({});
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} client`;
+    return this.clientRepository.getClient(id);
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
+  status(id: number) {
+    const client = this.clientRepository.getClient(id);
+
+    if (!client) {
+      throw new NotFoundException('Client not found');
+    }
+
+    return client.active;
   }
+
+  // update(id: number, updateClientDto: UpdateClientDto) {
+  //   return `This action updates a #${id} client`;
+  // }
 
   remove(id: number) {
-    return `This action removes a #${id} client`;
+    const exclude = this.clientRepository.getClient(id);
+    if (!exclude) {
+      throw new NotFoundException('Client not found');
+    }
+
+    const accountId = exclude.idAccount;
+    this.accountRepository.deleteAccount(accountId);
+    return this.clientRepository.deleteClient(id);
+  }
+
+  clear() {
+    this.accountRepository.clear();
+    return this.clientRepository.clear();
   }
 }

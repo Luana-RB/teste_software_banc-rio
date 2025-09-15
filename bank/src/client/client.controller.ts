@@ -22,13 +22,18 @@ export class ClientController {
     return this.clientService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientService.update(+id, updateClientDto);
+  @Get(':id')
+  status(@Param('id') id: string) {
+    return this.clientService.status(+id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.clientService.remove(+id);
+  }
+
+  @Delete()
+  clear() {
+    return this.clientService.clear();
   }
 }

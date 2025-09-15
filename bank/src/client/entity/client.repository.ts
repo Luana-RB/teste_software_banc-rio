@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { CreateClientDto } from '../dto/create-client.dto';
 
 // Deve ser como um DB, apenas funcoes basicas
 @Injectable()
 export class ClientRepository {
   private clients: Client[] = [];
 
-  public newClient(client: Client): boolean {
-    if (this.clientExists(client.id)) {
-      return false;
-    }
-    this.clients.push(client);
+  public newClient(client: CreateClientDto): boolean {
+    this.clients.push({ ...client, id: this.generateId() });
     return true;
   }
 
@@ -68,6 +66,17 @@ export class ClientRepository {
     this.clients.splice(clientIndex, 1);
     return true;
   }
+
+  public clear(): void {
+    this.clients = [];
+  }
+
+  private generateId(): number {
+    return this.clients.length > 0
+      ? Math.max(...this.clients.map((client) => client.id)) + 1
+      : 1;
+  }
+
 }
 
 export type Client = {
