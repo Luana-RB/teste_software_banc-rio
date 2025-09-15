@@ -31,4 +31,24 @@ export class AccountController {
   remove(@Param('id') id: string) {
     return this.accountService.remove(+id);
   }
+
+  @Get(':id/status')
+  checkAccountStatus(@Param('id') id: string) {
+    return this.accountService.checkAccountStatus(+id);
+  }
+
+  @Post('transfer')
+  transfer(
+    @Body() transferData: {
+      idContaOrigem: number;
+      idContaDestino: number;
+      valor: number;
+    },
+  ): Promise<boolean> {
+    return this.accountService.transfer(
+      transferData.idContaOrigem,
+      transferData.idContaDestino,
+      transferData.valor,
+    );
+  }
 }
