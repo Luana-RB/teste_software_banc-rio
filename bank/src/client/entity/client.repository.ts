@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from '../dto/create-client.dto';
-import { Account } from 'src/account/entity/account.repository';
 
 // Deve ser como um DB, apenas funcoes basicas
 @Injectable()
@@ -77,7 +76,6 @@ export class ClientRepository {
       ? Math.max(...this.clients.map((client) => client.id)) + 1
       : 1;
   }
-
 }
 
 export type Client = {
