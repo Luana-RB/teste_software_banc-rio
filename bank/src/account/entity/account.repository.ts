@@ -10,7 +10,7 @@ export class AccountRepository {
   public newAccount(active: boolean): Account | undefined {
     const account: Account = {
       id: this.generateId(),
-      saldo: 0,
+      saldo: 100,
       ativa: active,
     };
     this.accounts.push(account);
