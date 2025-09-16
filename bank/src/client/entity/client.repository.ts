@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from '../dto/create-client.dto';
+import { Account } from 'src/account/entity/account.repository';
 
 // Deve ser como um DB, apenas funcoes basicas
 @Injectable()

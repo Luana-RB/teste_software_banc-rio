@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientRepository } from './entity/client.repository';
 import { AccountRepository } from 'src/account/entity/account.repository';
 
@@ -22,6 +21,22 @@ export class ClientService {
 
   findAll() {
     return this.clientRepository.getClients({});
+  }
+
+  // função implementada com IA
+  listComplete() {
+    const clients = this.clientRepository.getClients({});
+    const accounts = this.accountRepository.getAccounts({});
+
+    const completeList = clients.map((client) => {
+      const account = accounts.find((acc) => acc.id === client.idAccount);
+      return {
+        ...client,
+        account: account || null,
+      };
+    });
+
+    return completeList;
   }
 
   findOne(id: number) {

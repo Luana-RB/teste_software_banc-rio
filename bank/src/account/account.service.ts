@@ -1,45 +1,32 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AccountRepository } from './entity/account.repository';
-import { ClientRepository } from 'src/client/entity/client.repository';
 
 @Injectable()
 export class AccountService {
-
-  constructor(
-    private readonly accountRepository: AccountRepository,
-    private readonly clientRepository: ClientRepository,
-  ) {}
+  constructor(private readonly accountRepository: AccountRepository) {}
 
   findAll() {
-    return `This action returns all account`;
+    return this.accountRepository.getAccounts({});
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} account`;
+    return this.accountRepository.getAccount(id);
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} account`;
-  }
-
-  
   // Informa se uma determinada conta está ativa ou não.
   checkAccountStatus(id: number): boolean {
     const account = this.accountRepository.getAccount(id);
-    
+
     if (!account) {
       throw new NotFoundException(`Conta #${id} não encontrada`);
     }
 
     return account.ativa;
   }
-
 
   // função implementada com IA
   // Transfere um determinado valor de uma conta Origem para uma conta Destino.
@@ -64,6 +51,12 @@ export class AccountService {
     // Verifica se as contas estão ativas
     if (!contaOrigem.ativa || !contaDestino.ativa) {
       throw new BadRequestException('Uma das contas está inativa');
+    }
+
+    if (idContaOrigem === idContaDestino) {
+      throw new BadRequestException(
+        'Contas de origem e destino não podem ser iguais',
+      );
     }
 
     // Verifica se há saldo suficiente
