@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  MethodNotAllowedException,
   NotFoundException,
 } from '@nestjs/common';
 import { AccountRepository } from './entity/account.repository';
@@ -61,9 +62,9 @@ export class AccountService {
 
     // Verifica se há saldo suficiente
     if (contaOrigem.saldo < valor) {
-      return false;
+      throw new MethodNotAllowedException('Saldo insuficiente na conta de origem');
     }
-
+    
     // Realiza a transferência
     contaOrigem.saldo -= valor;
     contaDestino.saldo += valor;
@@ -71,7 +72,7 @@ export class AccountService {
     // Atualiza as contas no repositório
     this.accountRepository.updateAccount(idContaOrigem, contaOrigem);
     this.accountRepository.updateAccount(idContaDestino, contaDestino);
-
+    
     return true;
   }
 }
