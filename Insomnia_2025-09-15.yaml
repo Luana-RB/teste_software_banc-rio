@@ -95,42 +95,12 @@ collection:
         pathParameters:
           - name: id
             value: "1"
-      - url: http://localhost:3000/account/:id
-        name: Remove
-        meta:
-          id: req_ca709924e8cc482cbaa760356eeeda77
-          created: 1757979117249
-          modified: 1757982704575
-          isPrivate: false
-          description: ""
-          sortKey: -1757979038320.5
-        method: DELETE
-        parameters:
-          - id: pair_fa32a857e4f94358b4c81886cc6e2e10
-            name: id
-            value: ""
-            description: ""
-            disabled: false
-        headers:
-          - name: User-Agent
-            value: insomnia/11.6.0
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-        pathParameters:
-          - name: id
-            value: "2"
-      - url: http://localhost:3000/account/:id
+      - url: http://localhost:3000/account/transfer
         name: Transfer
         meta:
           id: req_952531b796894a439752535bb48651c5
           created: 1757981182430
-          modified: 1757981952754
+          modified: 1757983155765
           isPrivate: false
           description: ""
           sortKey: -1757979038301.75
@@ -144,8 +114,8 @@ collection:
             	"transferData": 1
             }
         parameters:
-          - id: pair_fa32a857e4f94358b4c81886cc6e2e10
-            name: id
+          - id: pair_4cdcd201b6f444909d8b6aba4d193dbe
+            name: ""
             value: ""
             description: ""
             disabled: false
@@ -162,9 +132,6 @@ collection:
             send: true
             store: true
           rebuildPath: true
-        pathParameters:
-          - name: id
-            value: ""
   - name: Client
     meta:
       id: fld_2841cc0a65ee479bb952b5edd70ff65d
@@ -199,7 +166,7 @@ collection:
         meta:
           id: req_14c1ea729c634dbd86112683462fb244
           created: 1757979230109
-          modified: 1757979635007
+          modified: 1757983030756
           isPrivate: false
           description: ""
           sortKey: -1757979038483
@@ -208,7 +175,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"name": "Arthur",
+            	"name": "Arthur2",
             	"age": 18,
             	"email": "arthur@gmail.com",
             	"active": true,
@@ -253,7 +220,7 @@ collection:
         meta:
           id: req_9d422f2e8fd2476bb48bbb8bf882bd6b
           created: 1757979230110
-          modified: 1757981387678
+          modified: 1757983049010
           isPrivate: false
           description: ""
           sortKey: -1757979038383
@@ -277,7 +244,7 @@ collection:
         meta:
           id: req_7744ffa3c23048b992a624e70aa08aaa
           created: 1757979230111
-          modified: 1757981405862
+          modified: 1757983060466
           isPrivate: false
           description: ""
           sortKey: -1757979038333
