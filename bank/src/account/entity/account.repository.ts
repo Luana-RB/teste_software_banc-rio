@@ -7,12 +7,14 @@ import { Injectable } from '@nestjs/common';
 export class AccountRepository {
   private accounts: Account[] = [];
 
-  public newAccount(account: Account): boolean {
-    if (this.accountExists(account.id)) {
-      return false;
-    }
+  public newAccount(active: boolean): Account | undefined {
+    const account: Account = {
+      id: this.generateId(),
+      saldo: 0,
+      ativa: active,
+    };
     this.accounts.push(account);
-    return true;
+    return account;
   }
 
   public accountExists(accountId: number): boolean {
@@ -66,6 +68,17 @@ export class AccountRepository {
     this.accounts.splice(accountIndex, 1);
     return true;
   }
+
+  public clear(): void {
+    this.accounts = [];
+  }
+
+  public generateId(): number {
+    return this.accounts.length > 0
+      ? Math.max(...this.accounts.map((account) => account.id)) + 1
+      : 1;
+  }
+
 }
 
 export type Account = {

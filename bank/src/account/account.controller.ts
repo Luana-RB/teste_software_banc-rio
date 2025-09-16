@@ -7,11 +7,6 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.accountService.create(createAccountDto);
-  }
-
   @Get()
   findAll() {
     return this.accountService.findAll();
@@ -30,5 +25,25 @@ export class AccountController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.accountService.remove(+id);
+  }
+
+  @Get(':id/status')
+  checkAccountStatus(@Param('id') id: string) {
+    return this.accountService.checkAccountStatus(+id);
+  }
+
+  @Post('transfer')
+  transfer(
+    @Body() transferData: {
+      idContaOrigem: number;
+      idContaDestino: number;
+      valor: number;
+    },
+  ): Promise<boolean> {
+    return this.accountService.transfer(
+      transferData.idContaOrigem,
+      transferData.idContaDestino,
+      transferData.valor,
+    );
   }
 }

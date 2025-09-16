@@ -7,7 +7,7 @@ export class ClientRepository {
   private clients: Client[] = [];
 
   public newClient(client: CreateClientDto): boolean {
-    this.clients.push({ ...client, id: this.generateId() });
+    this.clients.push({ id: this.generateId(), ...client });
     return true;
   }
 

@@ -12,6 +12,11 @@ export class ClientService {
   ) {}
 
   create(createClientDto: CreateClientDto) {
+    const account = this.accountRepository.newAccount(createClientDto.active);
+    if (!account) {
+      throw new NotFoundException('Erro ao criar conta para o cliente');
+    }
+    createClientDto.idAccount = account.id;
     return this.clientRepository.newClient(createClientDto);
   }
 
@@ -32,10 +37,6 @@ export class ClientService {
 
     return client.active;
   }
-
-  // update(id: number, updateClientDto: UpdateClientDto) {
-  //   return `This action updates a #${id} client`;
-  // }
 
   remove(id: number) {
     const exclude = this.clientRepository.getClient(id);

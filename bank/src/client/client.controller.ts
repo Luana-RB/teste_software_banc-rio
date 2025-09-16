@@ -22,7 +22,7 @@ export class ClientController {
     return this.clientService.findOne(+id);
   }
 
-  @Get(':id')
+  @Get(':id/status')
   status(@Param('id') id: string) {
     return this.clientService.status(+id);
   }
