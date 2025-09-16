@@ -1,6 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AccountService } from './account.service';
-import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
 @Controller('account')
@@ -34,7 +41,8 @@ export class AccountController {
 
   @Post('transfer')
   transfer(
-    @Body() transferData: {
+    @Body()
+    transferData: {
       idContaOrigem: number;
       idContaDestino: number;
       valor: number;
