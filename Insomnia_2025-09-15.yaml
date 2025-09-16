@@ -100,7 +100,7 @@ collection:
         meta:
           id: req_952531b796894a439752535bb48651c5
           created: 1757981182430
-          modified: 1757983155765
+          modified: 1757983940229
           isPrivate: false
           description: ""
           sortKey: -1757979038301.75
@@ -111,7 +111,7 @@ collection:
             {
             	"idContaOrigem": 1,
             	"idContaDestino": 2,
-            	"transferData": 1
+            	"valor": 100
             }
         parameters:
           - id: pair_4cdcd201b6f444909d8b6aba4d193dbe
