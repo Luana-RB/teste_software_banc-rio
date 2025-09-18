@@ -90,31 +90,23 @@ describe('AccountService', () => {
       expect(conta.ativa).toEqual(true);
     });
   });
+  //teste de ramificação
   describe('transfer', () => {
     const contaOrigem = { id: 1, ativa: true, saldo: 500 };
     const contaDestino = { id: 2, ativa: true, saldo: 200 };
 
-    it('should transfer successfully', () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce({ ...contaOrigem })
-        .mockReturnValueOnce({ ...contaDestino });
-
-      const result = service.transfer(1, 2, 100);
-
-      expect(result).toBe(true);
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledTimes(2);
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(1, {
-        ...contaOrigem,
-        saldo: 400,
-      });
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(2, {
-        ...contaDestino,
-        saldo: 300,
-      });
-    });
-
     it('should throw BadRequestException if valor <= 0', async () => {
       await expect(service.transfer(1, 2, 0)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+
+    it('should throw BadRequestException if origin and destination are the same', async () => {
+      mockAccountRepository.getAccount
+        .mockReturnValueOnce(contaOrigem)
+        .mockReturnValueOnce(contaOrigem);
+
+      await expect(service.transfer(1, 1, 100)).rejects.toThrow(
         BadRequestException,
       );
     });
@@ -139,16 +131,6 @@ describe('AccountService', () => {
       );
     });
 
-    it('should throw BadRequestException if origin and destination are the same', async () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce(contaOrigem)
-        .mockReturnValueOnce(contaOrigem);
-
-      await expect(service.transfer(1, 1, 100)).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-
     it('should throw MethodNotAllowedException if saldo is insufficient', async () => {
       mockAccountRepository.getAccount
         .mockReturnValueOnce({ ...contaOrigem, saldo: 50 })
@@ -157,6 +139,25 @@ describe('AccountService', () => {
       await expect(service.transfer(1, 2, 100)).rejects.toThrow(
         MethodNotAllowedException,
       );
+    });
+
+    it('should transfer successfully', () => {
+      mockAccountRepository.getAccount
+        .mockReturnValueOnce({ ...contaOrigem })
+        .mockReturnValueOnce({ ...contaDestino });
+
+      const result = service.transfer(1, 2, 100);
+
+      expect(result).toBe(true);
+      expect(mockAccountRepository.updateAccount).toHaveBeenCalledTimes(2);
+      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(1, {
+        ...contaOrigem,
+        saldo: 400,
+      });
+      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(2, {
+        ...contaDestino,
+        saldo: 300,
+      });
     });
   });
 });

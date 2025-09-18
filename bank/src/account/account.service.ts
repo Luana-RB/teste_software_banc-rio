@@ -41,6 +41,12 @@ export class AccountService {
       throw new BadRequestException('Valor deve ser maior que zero');
     }
 
+    if (idContaOrigem === idContaDestino) {
+      throw new BadRequestException(
+        'Contas de origem e destino não podem ser iguais',
+      );
+    }
+
     const contaOrigem = this.accountRepository.getAccount(idContaOrigem);
     const contaDestino = this.accountRepository.getAccount(idContaDestino);
 
@@ -52,12 +58,6 @@ export class AccountService {
     // Verifica se as contas estão ativas
     if (!contaOrigem.ativa || !contaDestino.ativa) {
       throw new BadRequestException('Uma das contas está inativa');
-    }
-
-    if (idContaOrigem === idContaDestino) {
-      throw new BadRequestException(
-        'Contas de origem e destino não podem ser iguais',
-      );
     }
 
     // Verifica se há saldo suficiente
