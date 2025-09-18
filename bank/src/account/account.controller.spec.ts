@@ -1,146 +1,79 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
-import { AccountRepository } from './entity/account.repository';
-import {
-  BadRequestException,
-  MethodNotAllowedException,
-  NotFoundException,
-} from '@nestjs/common';
 
-describe('AccountService', () => {
-  let service: AccountService;
-  let mockAccountRepository: {
-    getAccounts: jest.Mock;
-    getAccount: jest.Mock;
-    updateAccount: jest.Mock;
+describe('AccountController', () => {
+  let controller: AccountController;
+  let mockAccountService: {
+    findAll: jest.Mock;
+    findOne: jest.Mock;
+    checkAccountStatus: jest.Mock;
+    transfer: jest.Mock;
   };
 
   beforeEach(async () => {
-    mockAccountRepository = {
-      getAccounts: jest.fn(),
-      getAccount: jest.fn(),
-      updateAccount: jest.fn(),
+    mockAccountService = {
+      findAll: jest.fn(),
+      findOne: jest.fn(),
+      checkAccountStatus: jest.fn(),
+      transfer: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [AccountController],
       providers: [
-        AccountService,
         {
-          provide: AccountRepository,
-          useValue: mockAccountRepository,
+          provide: AccountService,
+          useValue: mockAccountService,
         },
       ],
     }).compile();
 
-    service = module.get<AccountService>(AccountService);
+    controller = module.get<AccountController>(AccountController);
   });
 
   describe('findAll', () => {
     it('should return all accounts', () => {
-      const accounts = [{ id: 1 }, { id: 2 }];
-      mockAccountRepository.getAccounts.mockReturnValue(accounts);
+      const result = [{ id: 1 }, { id: 2 }];
+      mockAccountService.findAll.mockResolvedValue(result);
 
-      expect(service.findAll()).toEqual(accounts);
-      expect(mockAccountRepository.getAccounts).toHaveBeenCalledWith({});
+      expect(controller.findAll()).toEqual(result);
+      expect(mockAccountService.findAll).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('findOne', () => {
-    it('should return one account by ID', () => {
-      const account = { id: 1 };
-      mockAccountRepository.getAccount.mockReturnValue(account);
+    it('should return one account by id', () => {
+      const result = { id: 1 };
+      mockAccountService.findOne.mockResolvedValue(result);
 
-      expect(service.findOne(1)).toEqual(account);
-      expect(mockAccountRepository.getAccount).toHaveBeenCalledWith(1);
+      expect(controller.findOne('1')).toEqual(result);
+      expect(mockAccountService.findOne).toHaveBeenCalledWith(1);
     });
   });
 
   describe('checkAccountStatus', () => {
-    it('should return true if account is active', () => {
-      mockAccountRepository.getAccount.mockReturnValue({ ativa: true });
+    it('should return the status of the account', () => {
+      const status = 'active';
+      mockAccountService.checkAccountStatus.mockResolvedValue(status);
 
-      expect(service.checkAccountStatus(1)).toBe(true);
-    });
-    it('should return false if account is inactive', () => {
-      mockAccountRepository.getAccount.mockReturnValue({ ativa: false });
-
-      expect(service.checkAccountStatus(1)).toBe(false);
-    });
-
-    it('should throw NotFoundException if account does not exist', () => {
-      mockAccountRepository.getAccount.mockReturnValue(null);
-
-      expect(() => service.checkAccountStatus(1)).toThrow(NotFoundException);
+      expect(controller.checkAccountStatus('1')).toBe(status);
+      expect(mockAccountService.checkAccountStatus).toHaveBeenCalledWith(1);
     });
   });
 
   describe('transfer', () => {
-    const contaOrigem = { id: 1, ativa: true, saldo: 500 };
-    const contaDestino = { id: 2, ativa: true, saldo: 200 };
+    it('should call transfer with correct data and return true', () => {
+      const transferData = {
+        idContaOrigem: 1,
+        idContaDestino: 2,
+        valor: 100,
+      };
 
-    it('should transfer successfully', () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce({ ...contaOrigem })
-        .mockReturnValueOnce({ ...contaDestino });
+      mockAccountService.transfer.mockReturnValue(true);
 
-      const result = service.transfer(1, 2, 100);
-
-      expect(result).toBe(true);
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledTimes(2);
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(1, {
-        ...contaOrigem,
-        saldo: 400,
-      });
-      expect(mockAccountRepository.updateAccount).toHaveBeenCalledWith(2, {
-        ...contaDestino,
-        saldo: 300,
-      });
-    });
-
-    it('should throw BadRequestException if valor <= 0', async () => {
-      await expect(service.transfer(1, 2, 0)).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-
-    it('should throw NotFoundException if any account is not found', async () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce(null)
-        .mockReturnValueOnce(contaDestino);
-
-      await expect(service.transfer(1, 2, 100)).rejects.toThrow(
-        NotFoundException,
-      );
-    });
-
-    it('should throw BadRequestException if any account is inactive', async () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce({ ...contaOrigem, ativa: false })
-        .mockReturnValueOnce(contaDestino);
-
-      await expect(service.transfer(1, 2, 100)).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-
-    it('should throw BadRequestException if origin and destination are the same', async () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce(contaOrigem)
-        .mockReturnValueOnce(contaOrigem);
-
-      await expect(service.transfer(1, 1, 100)).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-
-    it('should throw MethodNotAllowedException if saldo is insufficient', async () => {
-      mockAccountRepository.getAccount
-        .mockReturnValueOnce({ ...contaOrigem, saldo: 50 })
-        .mockReturnValueOnce(contaDestino);
-
-      await expect(service.transfer(1, 2, 100)).rejects.toThrow(
-        MethodNotAllowedException,
-      );
+      expect(controller.transfer(transferData)).toBe(true);
+      expect(mockAccountService.transfer).toHaveBeenCalledWith(1, 2, 100);
     });
   });
 });
