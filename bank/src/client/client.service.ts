@@ -50,7 +50,7 @@ export class ClientService {
     const client = this.clientRepository.getClient(id);
 
     if (!client) {
-      throw new NotFoundException('Client not found');
+      throw new NotFoundException(`Cliente ${id} não encontrado`);
     }
 
     return client.active;
@@ -66,7 +66,7 @@ export class ClientService {
   remove(id: number) {
     const exclude = this.clientRepository.getClient(id);
     if (!exclude) {
-      throw new NotFoundException('Client not found');
+      throw new NotFoundException(`Cliente ${id} não encontrado`);
     }
 
     const accountId = exclude.idAccount;
