@@ -77,4 +77,22 @@ export class AccountService {
 
     return true;
   }
+
+  desativaConta(id: number) {
+    const conta = this.accountRepository.getAccount(id);
+    if (conta) {
+      conta.ativa = false;
+      return true;
+    }
+    return false;
+  }
+
+  ativaConta(id: number) {
+    const conta = this.accountRepository.getAccount(id);
+    if (conta) {
+      conta.ativa = true;
+      return true;
+    }
+    return false;
+  }
 }
