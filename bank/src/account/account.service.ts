@@ -31,11 +31,11 @@ export class AccountService {
 
   // função implementada com IA
   // Transfere um determinado valor de uma conta Origem para uma conta Destino.
-  async transfer(
+  transfer(
     idContaOrigem: number,
     idContaDestino: number,
     valor: number,
-  ): Promise<boolean> {
+  ): boolean {
     // Validações iniciais
     if (valor <= 0) {
       throw new BadRequestException('Valor deve ser maior que zero');
@@ -62,9 +62,11 @@ export class AccountService {
 
     // Verifica se há saldo suficiente
     if (contaOrigem.saldo < valor) {
-      throw new MethodNotAllowedException('Saldo insuficiente na conta de origem');
+      throw new MethodNotAllowedException(
+        'Saldo insuficiente na conta de origem',
+      );
     }
-    
+
     // Realiza a transferência
     contaOrigem.saldo -= valor;
     contaDestino.saldo += valor;
@@ -72,7 +74,7 @@ export class AccountService {
     // Atualiza as contas no repositório
     this.accountRepository.updateAccount(idContaOrigem, contaOrigem);
     this.accountRepository.updateAccount(idContaDestino, contaDestino);
-    
+
     return true;
   }
 }

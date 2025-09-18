@@ -61,6 +61,11 @@ describe('AccountService', () => {
 
       expect(service.checkAccountStatus(1)).toBe(true);
     });
+    it('should return false if account is inactive', () => {
+      mockAccountRepository.getAccount.mockReturnValue({ ativa: false });
+
+      expect(service.checkAccountStatus(1)).toBe(false);
+    });
 
     it('should throw NotFoundException if account does not exist', () => {
       mockAccountRepository.getAccount.mockReturnValue(null);
@@ -73,12 +78,12 @@ describe('AccountService', () => {
     const contaOrigem = { id: 1, ativa: true, saldo: 500 };
     const contaDestino = { id: 2, ativa: true, saldo: 200 };
 
-    it('should transfer successfully', async () => {
+    it('should transfer successfully', () => {
       mockAccountRepository.getAccount
         .mockReturnValueOnce({ ...contaOrigem })
         .mockReturnValueOnce({ ...contaDestino });
 
-      const result = await service.transfer(1, 2, 100);
+      const result = service.transfer(1, 2, 100);
 
       expect(result).toBe(true);
       expect(mockAccountRepository.updateAccount).toHaveBeenCalledTimes(2);

@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AccountService } from './account.service';
 
 @Controller('account')
@@ -34,7 +28,7 @@ export class AccountController {
       idContaDestino: number;
       valor: number;
     },
-  ): Promise<boolean> {
+  ): boolean {
     return this.accountService.transfer(
       transferData.idContaOrigem,
       transferData.idContaDestino,

@@ -78,7 +78,6 @@ export class AccountRepository {
       ? Math.max(...this.accounts.map((account) => account.id)) + 1
       : 1;
   }
-
 }
 
 export type Account = {
