@@ -59,7 +59,7 @@ describe('ClientService', () => {
       ];
       expect(service.create(clientsDto[0])).toThrow(AgeNotPermitedException);
       expect(service.create(clientsDto[1])).toThrow(AgeNotPermitedException);
-      expect(service.create(clientsDto[2])).toEqual(true);
+      expect(service.create(clientsDto[2])).toBe(true);
     });
   });
 });
