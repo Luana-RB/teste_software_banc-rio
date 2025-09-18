@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ClientRepository } from './entity/client.repository';
 import { AccountRepository } from 'src/account/entity/account.repository';
+import { AgeNotPermitedException } from 'src/exceptions/ageNotPermitedException';
 
 @Injectable()
 export class ClientService {
@@ -11,12 +12,14 @@ export class ClientService {
   ) {}
 
   create(createClientDto: CreateClientDto) {
-    const account = this.accountRepository.newAccount(createClientDto.active);
-    if (!account) {
-      throw new NotFoundException('Erro ao criar conta para o cliente');
+    if (this.validateAge(createClientDto.age)) {
+      const account = this.accountRepository.newAccount(createClientDto.active);
+      if (!account) {
+        throw new NotFoundException('Erro ao criar conta para o cliente');
+      }
+      createClientDto.idAccount = account.id;
+      return this.clientRepository.newClient(createClientDto);
     }
-    createClientDto.idAccount = account.id;
-    return this.clientRepository.newClient(createClientDto);
   }
 
   findAll() {
@@ -51,6 +54,13 @@ export class ClientService {
     }
 
     return client.active;
+  }
+
+  validateAge(age: number) {
+    if (age < 18 || age > 65) {
+      throw new AgeNotPermitedException(`Idade não permitida: ${age}`);
+    }
+    return true;
   }
 
   remove(id: number) {
