@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AccountService } from './account.service';
-import { AccountRepository } from './entity/account.repository';
+import { AccountRepository } from '../account/entity/account.repository';
 import {
   BadRequestException,
   MethodNotAllowedException,
@@ -15,6 +15,7 @@ describe('AccountService', () => {
     updateAccount: jest.Mock;
   };
 
+  // configuração inicial dos testes
   beforeEach(async () => {
     mockAccountRepository = {
       getAccounts: jest.fn(),
@@ -35,6 +36,7 @@ describe('AccountService', () => {
     service = module.get<AccountService>(AccountService);
   });
 
+  // teste de busca de todas as contas
   describe('findAll', () => {
     it('should return all accounts', () => {
       const accounts = [{ id: 1 }, { id: 2 }];
@@ -45,6 +47,7 @@ describe('AccountService', () => {
     });
   });
 
+  // teste de busca por ID
   describe('findOne', () => {
     it('should return one account by ID', () => {
       const account = { id: 1 };
@@ -55,6 +58,7 @@ describe('AccountService', () => {
     });
   });
 
+  // teste de verificação de status da conta
   describe('checkAccountStatus', () => {
     it('should return true if account is active', () => {
       mockAccountRepository.getAccount.mockReturnValue({ ativa: true });
@@ -73,7 +77,8 @@ describe('AccountService', () => {
       expect(() => service.checkAccountStatus(1)).toThrow(NotFoundException);
     });
   });
-  //teste de transição de estado
+
+  // teste de transição de estado
   describe('deactivate and activate account', () => {
     const conta = { id: 1, ativa: true, saldo: 500 };
     it('should make conta.ativa be false when deactivated', () => {

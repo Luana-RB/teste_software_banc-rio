@@ -11,6 +11,7 @@ describe('AccountController', () => {
     transfer: jest.Mock;
   };
 
+  // configuração inicial dos testes
   beforeEach(async () => {
     mockAccountService = {
       findAll: jest.fn(),
@@ -32,6 +33,7 @@ describe('AccountController', () => {
     controller = module.get<AccountController>(AccountController);
   });
 
+  // teste de busca de todas as contas
   describe('findAll', () => {
     it('should return all accounts', () => {
       const result = [{ id: 1 }, { id: 2 }];
@@ -42,6 +44,7 @@ describe('AccountController', () => {
     });
   });
 
+  // teste de busca por ID
   describe('findOne', () => {
     it('should return one account by id', () => {
       const result = { id: 1 };
@@ -52,6 +55,7 @@ describe('AccountController', () => {
     });
   });
 
+  // teste de verificação do status da conta
   describe('checkAccountStatus', () => {
     it('should return the status of the account', () => {
       const status = true;
@@ -62,6 +66,7 @@ describe('AccountController', () => {
     });
   });
 
+  // teste de transferência entre contas
   describe('transfer', () => {
     it('should call transfer with correct data and return true', () => {
       const transferData = {

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { ClientController } from './client.controller';
 import { ClientRepository } from './entity/client.repository';
-import { AccountModule } from 'src/account/account.module';
+import { AccountModule } from '../account/account.module';
 
 @Module({
   imports: [AccountModule],

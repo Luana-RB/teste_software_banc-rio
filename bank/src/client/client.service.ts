@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ClientRepository } from './entity/client.repository';
-import { AccountRepository } from 'src/account/entity/account.repository';
+import { AccountRepository } from '../account/entity/account.repository';
 import { AgeNotPermitedException } from 'src/exceptions/ageNotPermitedException';
 
 @Injectable()

@@ -4,7 +4,7 @@ import {
   MethodNotAllowedException,
   NotFoundException,
 } from '@nestjs/common';
-import { AccountRepository } from './entity/account.repository';
+import { AccountRepository } from '../account/entity/account.repository';
 
 @Injectable()
 export class AccountService {
@@ -21,11 +21,9 @@ export class AccountService {
   // Informa se uma determinada conta está ativa ou não.
   checkAccountStatus(id: number): boolean {
     const account = this.accountRepository.getAccount(id);
-
     if (!account) {
       throw new NotFoundException(`Conta #${id} não encontrada`);
     }
-
     return account.ativa;
   }
 
@@ -36,7 +34,6 @@ export class AccountService {
     idContaDestino: number,
     valor: number,
   ): boolean {
-    // Validações iniciais
     if (valor <= 0) {
       throw new BadRequestException('Valor deve ser maior que zero');
     }
