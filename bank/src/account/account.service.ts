@@ -79,6 +79,7 @@ export class AccountService {
     const conta = this.accountRepository.getAccount(id);
     if (conta) {
       conta.ativa = false;
+      this.accountRepository.updateAccount(id, conta);
       return true;
     }
     return false;
@@ -88,6 +89,7 @@ export class AccountService {
     const conta = this.accountRepository.getAccount(id);
     if (conta) {
       conta.ativa = true;
+      this.accountRepository.updateAccount(id, conta);
       return true;
     }
     return false;
