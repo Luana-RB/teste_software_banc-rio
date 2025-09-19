@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { ClientRepository } from './entity/client.repository';
 import { AccountRepository } from '../account/entity/account.repository';
-import { AgeNotPermitedException } from 'src/exceptions/ageNotPermitedException';
+import { AgeNotPermitedException } from '../exceptions/ageNotPermitedException';
 
 @Injectable()
 export class ClientService {
@@ -20,6 +20,7 @@ export class ClientService {
       createClientDto.idAccount = account.id;
       return this.clientRepository.newClient(createClientDto);
     }
+    return false;
   }
 
   findAll() {

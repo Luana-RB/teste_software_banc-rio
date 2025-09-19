@@ -2,22 +2,30 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClientService } from './client.service';
 import { ClientRepository } from './entity/client.repository';
 import { CreateClientDto } from './dto/create-client.dto';
-import { AgeNotPermitedException } from 'src/exceptions/ageNotPermitedException';
+import { AgeNotPermitedException } from '../exceptions/ageNotPermitedException';
+import { AccountRepository } from '../account/entity/account.repository';
+import { CreateAccountDto } from 'src/account/dto/create-account.dto';
 
 describe('ClientService', () => {
   let service: ClientService;
   let mockClientRepository: {
     getClients: jest.Mock;
-    getClient: jest.Mock;
+    newClient: jest.Mock;
     updateClient: jest.Mock;
+  };
+  let mockAccountRepository: {
+    newAccount: jest.Mock;
   };
 
   // configuração inicial dos testes
   beforeEach(async () => {
     mockClientRepository = {
       getClients: jest.fn(),
-      getClient: jest.fn(),
+      newClient: jest.fn(),
       updateClient: jest.fn(),
+    };
+    mockAccountRepository = {
+      newAccount: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -27,6 +35,7 @@ describe('ClientService', () => {
           provide: ClientRepository,
           useValue: mockClientRepository,
         },
+        { provide: AccountRepository, useValue: mockAccountRepository },
       ],
     }).compile();
 
@@ -52,16 +61,26 @@ describe('ClientService', () => {
           idAccount: 2,
         },
         {
-          name: '',
+          name: 'nome',
           age: 30,
-          email: '',
+          email: 'l@gmail.com',
           active: false,
           idAccount: 3,
         },
       ];
-      expect(service.create(clientsDto[0])).toThrow(AgeNotPermitedException);
-      expect(service.create(clientsDto[1])).toThrow(AgeNotPermitedException);
-      expect(service.create(clientsDto[2])).toBe(true);
+      const account: CreateAccountDto = {};
+      mockAccountRepository.newAccount.mockReturnValue(account);
+      mockClientRepository.newClient.mockReturnValue(true);
+      expect(() => service.create(clientsDto[0])).toThrow(
+        AgeNotPermitedException,
+      );
+      expect(() => service.create(clientsDto[1])).toThrow(
+        AgeNotPermitedException,
+      );
+
+      expect(service.create(clientsDto[2])).toEqual(true);
+
+      expect(service.create(clientsDto[2])).toEqual(true);
     });
   });
 });
