@@ -37,9 +37,10 @@ describe('AccountController', () => {
   describe('findAll', () => {
     it('should return all accounts', () => {
       const result = [{ id: 1 }, { id: 2 }];
-      mockAccountService.findAll.mockResolvedValue(result);
+      mockAccountService.findAll.mockReturnValue(result);
 
-      expect(controller.findAll()).toEqual(result);
+      const response = controller.findAll();
+      expect(response).toEqual(result);
       expect(mockAccountService.findAll).toHaveBeenCalledTimes(1);
     });
   });
@@ -48,9 +49,10 @@ describe('AccountController', () => {
   describe('findOne', () => {
     it('should return one account by id', () => {
       const result = { id: 1 };
-      mockAccountService.findOne.mockResolvedValue(result);
+      mockAccountService.findOne.mockReturnValue(result);
 
-      expect(controller.findOne('1')).toEqual(result);
+      const response = controller.findOne('1');
+      expect(response).toEqual(result);
       expect(mockAccountService.findOne).toHaveBeenCalledWith(1);
     });
   });
@@ -59,9 +61,9 @@ describe('AccountController', () => {
   describe('checkAccountStatus', () => {
     it('should return the status of the account', () => {
       const status = true;
-      mockAccountService.checkAccountStatus.mockResolvedValue(status);
-
-      expect(controller.checkAccountStatus('1')).toBe(status);
+      mockAccountService.checkAccountStatus.mockReturnValue(status);
+      const result = controller.checkAccountStatus('1');
+      expect(result).toEqual(status);
       expect(mockAccountService.checkAccountStatus).toHaveBeenCalledWith(1);
     });
   });
@@ -76,8 +78,8 @@ describe('AccountController', () => {
       };
 
       mockAccountService.transfer.mockReturnValue(true);
-
-      expect(controller.transfer(transferData)).toBe(true);
+      const result = controller.transfer(transferData);
+      expect(result).toBe(true);
       expect(mockAccountService.transfer).toHaveBeenCalledWith(1, 2, 100);
     });
   });

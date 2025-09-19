@@ -4,17 +4,20 @@ import {
   MethodNotAllowedException,
   NotFoundException,
 } from '@nestjs/common';
-import { AccountRepository } from '../account/entity/account.repository';
+import {
+  Account,
+  AccountRepository,
+} from '../account/entity/account.repository';
 
 @Injectable()
 export class AccountService {
   constructor(private readonly accountRepository: AccountRepository) {}
 
-  findAll() {
+  findAll(): Account[] {
     return this.accountRepository.getAccounts({});
   }
 
-  findOne(id: number) {
+  findOne(id: number): Account | undefined {
     return this.accountRepository.getAccount(id);
   }
 

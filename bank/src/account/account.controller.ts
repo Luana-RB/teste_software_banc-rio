@@ -1,17 +1,18 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AccountService } from './account.service';
+import { Account } from './entity/account.repository';
 
 @Controller('account')
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Get()
-  findAll() {
+  findAll(): Account[] {
     return this.accountService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Account | undefined {
     return this.accountService.findOne(+id);
   }
 
