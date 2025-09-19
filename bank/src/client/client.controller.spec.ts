@@ -5,6 +5,7 @@ import { ClientService } from './client.service';
 describe('ClientController', () => {
   let controller: ClientController;
 
+  // configuração inicial dos testes
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClientController],

@@ -12,6 +12,7 @@ describe('ClientService', () => {
     updateClient: jest.Mock;
   };
 
+  // configuração inicial dos testes
   beforeEach(async () => {
     mockClientRepository = {
       getClients: jest.fn(),
@@ -31,6 +32,7 @@ describe('ClientService', () => {
 
     service = module.get<ClientService>(ClientService);
   });
+
   //teste Particionamento de Equivalência
   describe('create', () => {
     it('should return error if age not permited', () => {
