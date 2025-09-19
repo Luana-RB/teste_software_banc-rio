@@ -54,7 +54,7 @@ describe('AccountController', () => {
 
   describe('checkAccountStatus', () => {
     it('should return the status of the account', () => {
-      const status = 'active';
+      const status = true;
       mockAccountService.checkAccountStatus.mockResolvedValue(status);
 
       expect(controller.checkAccountStatus('1')).toBe(status);
