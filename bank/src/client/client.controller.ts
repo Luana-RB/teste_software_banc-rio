@@ -28,7 +28,7 @@ export class ClientController {
 
   @Get(':id/status')
   status(@Param('id') id: string) {
-    return this.clientService.status(+id);
+    return { status: this.clientService.status(+id) };
   }
 
   @Delete(':id')

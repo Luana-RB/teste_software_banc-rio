@@ -63,7 +63,7 @@ describe('AccountController', () => {
       const status = true;
       mockAccountService.checkAccountStatus.mockReturnValue(status);
       const result = controller.checkAccountStatus('1');
-      expect(result).toEqual(status);
+      expect(result).toEqual({ status: true });
       expect(mockAccountService.checkAccountStatus).toHaveBeenCalledWith(1);
     });
   });

@@ -1,14 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClientDto } from '../dto/create-client.dto';
 
 // Deve ser como um DB, apenas funcoes basicas
 @Injectable()
 export class ClientRepository {
   private clients: Client[] = [];
 
-  public newClient(client: CreateClientDto): boolean {
-    this.clients.push({ id: this.generateId(), ...client });
-    return true;
+  public newClient(clientData: {
+    name: string;
+    age: number;
+    email: string;
+    active: boolean;
+    idAccount: number;
+  }): Client {
+    const newClient: Client = {
+      id: this.generateId(),
+      ...clientData,
+    };
+    this.clients.push(newClient);
+    return newClient; // Retorna o objeto completo do cliente
   }
 
   public clientExists(clientId: number): boolean {

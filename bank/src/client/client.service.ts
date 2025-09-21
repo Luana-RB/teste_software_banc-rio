@@ -44,7 +44,14 @@ export class ClientService {
   }
 
   findOne(id: number) {
-    return this.clientRepository.getClient(id);
+    const client = this.clientRepository.getClient(id);
+
+    if (!client) {
+      // Se o cliente não for encontrado, lance um erro 404
+      throw new NotFoundException(`Cliente ${id} não encontrado`);
+    }
+
+    return client;
   }
 
   status(id: number) {
