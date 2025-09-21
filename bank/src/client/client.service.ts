@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateClientDto } from './dto/create-client.dto';
+import { Client, CreateClientDto } from './dto/create-client.dto';
 import { ClientRepository } from './entity/client.repository';
 import { AccountRepository } from '../account/entity/account.repository';
 import { AgeNotPermitedException } from '../exceptions/ageNotPermitedException';
@@ -11,16 +11,14 @@ export class ClientService {
     private readonly accountRepository: AccountRepository,
   ) {}
 
-  create(createClientDto: CreateClientDto) {
-    if (this.validateAge(createClientDto.age)) {
-      const account = this.accountRepository.newAccount(createClientDto.active);
-      if (!account) {
-        throw new NotFoundException('Erro ao criar conta para o cliente');
-      }
-      createClientDto.idAccount = account.id;
-      return this.clientRepository.newClient(createClientDto);
+  create(createClientDto: CreateClientDto): Client {
+    this.validateAge(createClientDto.age);
+    const account = this.accountRepository.newAccount(createClientDto.active);
+    if (!account) {
+      throw new NotFoundException('Erro ao criar conta para o cliente');
     }
-    return false;
+    createClientDto.idAccount = account.id;
+    return this.clientRepository.newClient(createClientDto);
   }
 
   findAll() {
