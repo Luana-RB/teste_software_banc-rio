@@ -18,6 +18,7 @@ A aplicação simula funcionalidades básicas de um banco, gerenciando clientes 
 - Gerenciamento de Contas: Adicionar, remover e listar contas.
 - Operações Financeiras: Realizar transferências de valores entre contas.
 - Nova Funcionalidade - Ciclo de Vida da Conta: Foi implementado um sistema de ativação e desativação de contas. Uma conta pode ser desativada (por exemplo, ao ter seu saldo zerado) e reativada ao receber uma transferência.
+- Nova Funcionalidade - Consulta de Cliente e Conta: Foi implementada uma funcionalidade que permite consultar os clientes e suas contas associadas, retornando um objeto para cada cliente com as informações do cliente e uma lista de suas contas.
 
 ## Tecnologias utilizadas no Projeto:
 
