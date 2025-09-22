@@ -94,6 +94,13 @@ describe('AccountService', () => {
         conta,
       );
     });
+    it('should return false when deactivates non existed account', () => {
+      mockAccountRepository.getAccount.mockReturnValueOnce(null);
+
+      const result = service.desativaConta(100);
+
+      expect(result).toBe(false);
+    });
 
     it('should reactivate conta', () => {
       conta.ativa = false;
@@ -109,6 +116,13 @@ describe('AccountService', () => {
         1,
         conta,
       );
+    });
+    it('should return false when activates non existed account', () => {
+      mockAccountRepository.getAccount.mockReturnValueOnce(null);
+
+      const result = service.ativaConta(100);
+
+      expect(result).toBe(false);
     });
   });
 

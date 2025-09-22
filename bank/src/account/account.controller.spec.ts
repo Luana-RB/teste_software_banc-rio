@@ -9,6 +9,8 @@ describe('AccountController', () => {
     findOne: jest.Mock;
     checkAccountStatus: jest.Mock;
     transfer: jest.Mock;
+    desativaConta: jest.Mock;
+    ativaConta: jest.Mock;
   };
 
   // configuração inicial dos testes
@@ -18,6 +20,8 @@ describe('AccountController', () => {
       findOne: jest.fn(),
       checkAccountStatus: jest.fn(),
       transfer: jest.fn(),
+      desativaConta: jest.fn(),
+      ativaConta: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -67,7 +71,20 @@ describe('AccountController', () => {
       expect(mockAccountService.checkAccountStatus).toHaveBeenCalledWith(1);
     });
   });
-
+  describe('desactivate', () => {
+    it('should call service when desactivates account', () => {
+      mockAccountService.desativaConta.mockReturnValue(true);
+      controller.deactivateAccount('1');
+      expect(mockAccountService.desativaConta).toHaveBeenCalled();
+    });
+  });
+  describe('activate', () => {
+    it('should call service when activates account', () => {
+      mockAccountService.ativaConta.mockReturnValue(true);
+      controller.activateAccount('1');
+      expect(mockAccountService.ativaConta).toHaveBeenCalled();
+    });
+  });
   // teste de transferência entre contas
   describe('transfer', () => {
     it('should call transfer with correct data and return true', () => {
