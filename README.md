@@ -33,7 +33,8 @@ A aplicação simula funcionalidades básicas de um banco, gerenciando clientes 
 - NodeJS
 - Insomnia
 - Jest
-- Gherkin + Cucumber
+- Gherkin
+- Jest-cucumber
 
 ## Técnicas de Teste de software
 
