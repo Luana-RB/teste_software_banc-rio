@@ -152,4 +152,58 @@ describe('ClientRepository', () => {
       expect(repository.getClients({}).length).toBe(0);
     });
   });
+  describe('ClientRepository - Fluxo de controle', () => {
+    let repository: ClientRepository;
+
+    beforeEach(async () => {
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [ClientRepository],
+      }).compile();
+
+      repository = module.get<ClientRepository>(ClientRepository);
+      repository.clear();
+    });
+
+    it('should follow full client lifecycle (create → read → update → delete)', () => {
+      // 1. Criar cliente
+      const created = repository.newClient({
+        name: 'Fluxo Teste',
+        age: 40,
+        email: 'fluxo@example.com',
+        active: true,
+        idAccount: 10,
+      });
+
+      expect(created.id).toBeDefined();
+      expect(created.name).toBe('Fluxo Teste');
+
+      // 2. Confirmar que existe
+      expect(repository.clientExists(created.id)).toBe(true);
+
+      // 3. Buscar pelo id e pelo idAccount
+      const byId = repository.getClient(created.id);
+      expect(byId).toEqual(created);
+
+      const byAccount = repository.getClientByAccountId(created.idAccount);
+      expect(byAccount).toEqual(created);
+
+      // 4. Atualizar cliente
+      const updated = repository.updateClient(created.id, {
+        ...created,
+        name: 'Fluxo Atualizado',
+        age: 41,
+      })!;
+
+      expect(updated.name).toBe('Fluxo Atualizado');
+      expect(updated.age).toBe(41);
+
+      // 5. Deletar cliente
+      const deleted = repository.deleteClient(created.id);
+      expect(deleted).toBe(true);
+
+      // 6. Confirmar que foi removido
+      expect(repository.clientExists(created.id)).toBe(false);
+      expect(repository.getClient(created.id)).toBeUndefined();
+    });
+  });
 });
