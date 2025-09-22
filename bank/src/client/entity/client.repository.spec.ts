@@ -152,6 +152,7 @@ describe('ClientRepository', () => {
       expect(repository.getClients({}).length).toBe(0);
     });
   });
+  //teste fluxo de controle
   describe('ClientRepository - Fluxo de controle', () => {
     let repository: ClientRepository;
 
